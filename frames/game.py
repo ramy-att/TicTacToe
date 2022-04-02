@@ -6,9 +6,9 @@ from PIL import Image, ImageTk
 import random
 import time
 
-class Game(ttk.Frame):
-    def __init__(self,parent):
-        super().__init__(parent)
+class Front(ttk.Frame):
+    def __init__(self,container,controller):
+        super().__init__(container)
 
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
@@ -29,28 +29,38 @@ class Game(ttk.Frame):
         cover_label.grid(
             row=0,
             column=0,
+            padx=(0, 0),
             sticky="NSEW"
         )
-        # b1 = tk.Button(
-        #     self,
-        #     bg="grey",
-        #     fg="black",
-        #     text="Play",
-        #     height=2,
-        #     width=100,
-        #     command=lambda: parent.show_frame(Play)
-        # )
-        # b1.grid(
-        #     row=0,
-        #     column=0,
-        #     sticky= "SEW",
-        #     pady=(10,30),
-        # )
+        b1 = tk.Button(
+            self,
+            bg="grey",
+            fg="black",
+            text="Play",
+            command=lambda: controller.show_frame(Play)
+        )
+        b1.grid(
+            row=1,
+            column=0,
+            pady=(20,0),
+            padx=(0,0),
+            sticky= "NSEW",
 
+        )
+        r = ttk.Label(
+            self,
+            text="Developed By Ramy Attalla"
+        )
+        r.grid(
+            padx=(0, 0),
+            pady=(50, 5),
+            row=2,
+            column=0,
+        )
 
 class Play(ttk.Frame):
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, container,controller):
+        super().__init__(container)
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
 
@@ -77,16 +87,18 @@ class Play(ttk.Frame):
         self.button8 = tk.StringVar()
         self.button8.set("-")
 
-
-        welcome= ttk.Label(
+        welcome = ttk.Label(
             self,
-            textvariable=self.player,
+            textvariable=self.player
         )
         welcome.grid(
-            row=0,
+            row=5,
             column=2,
-            pady=(10,15)
+            pady=(60, 15),
+            padx=(0,180),
+            columnspan=4
         )
+
         b = tk.Button(
             self,
             bg="red",
@@ -97,11 +109,12 @@ class Play(ttk.Frame):
             command=lambda: self.reset()
         )
         b.grid(
-            padx=(55, 0),
+            padx=(0, 0),
             pady=(50,5),
             row=5,
             column=3,
         )
+
         pixelVirtual = tk.PhotoImage(width=1, height=1)
         #create buttons here using for loop
 
@@ -116,7 +129,7 @@ class Play(ttk.Frame):
             command=lambda: self.changeVal(b0,self.button0)
         )
         b0.grid(
-            padx=(55,0),
+            pady=(40,0),
             row=1,
             column=1,
         )
@@ -132,6 +145,7 @@ class Play(ttk.Frame):
         b1.grid(
             row=1,
             column=2,
+            pady=(40, 0),
         )
         b2 = tk.Button(
             self,
@@ -145,6 +159,9 @@ class Play(ttk.Frame):
         b2.grid(
             row=1,
             column=3,
+            pady=(40, 0),
+            padx=(0, 60),
+
         )
         b3 = tk.Button(
             self,
@@ -156,7 +173,7 @@ class Play(ttk.Frame):
             command=lambda: self.changeVal(b3, self.button3)
         )
         b3.grid(
-            padx=(55, 0),
+            padx=(0, 0),
             row=2,
             column=1,
         )
@@ -185,6 +202,8 @@ class Play(ttk.Frame):
         b5.grid(
             row=2,
             column=3,
+            padx=(0, 60),
+
         )
         b6 = tk.Button(
             self,
@@ -196,7 +215,7 @@ class Play(ttk.Frame):
             command=lambda: self.changeVal(b6, self.button6)
         )
         b6.grid(
-            padx=(55,0),
+            padx=(0,0),
             row=3,
             column=1,
         )
@@ -225,6 +244,8 @@ class Play(ttk.Frame):
         b8.grid(
             row=3,
             column=3,
+            padx=(0, 60),
+
         )
 
         #Board
@@ -237,6 +258,7 @@ class Play(ttk.Frame):
             print(self.player.get())
         else:
             self.player.set("Your move O !")
+
     def changeVal(self,button, text):
         if self.turn==True:
             print("True")
@@ -250,15 +272,8 @@ class Play(ttk.Frame):
         self.checkWinner()
 
     def showWinner(self):
-        welcome = ttk.Label(
-            self,
-            text="Game Over!"
-        )
-        welcome.grid(
-            row=5,
-            column=2,
-            pady=(40, 15)
-        )
+        self.player.set("Game Over!")
+
         for button in self.buttons:
             button['state']='disabled'
 
@@ -301,3 +316,5 @@ class Play(ttk.Frame):
         for list in self.board:
             for text in list:
                 text.set("-")
+        self.turn=True;
+        self.player.set("Your move X !")

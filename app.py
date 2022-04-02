@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import tkinter.font as font
-from frames import Game,Play
+from frames import Front,Play
 
 #Crispy Text
 try:
@@ -17,24 +17,21 @@ class TicTacToe(tk.Tk):
 
         self.title("TicTacToe Game")
         self.geometry("500x700")
-        self.columnconfigure(1, weight=1)
-        self.rowconfigure(1, weight=1)
 
-    #     self.frames= dict()
-    #     game_frame = Game(self) #Game-first, Play-Second
-    #     game_frame.grid(row=0, column=0, sticky="NSEW")
-    #
-        play_frame= Play(self)
-        play_frame.grid(row=0, column=0, sticky="NSEW")
-    #
-    # #     self.frames[Game]=game_frame
-    #     self.frames[Play]=play_frame
-    #     self.show_frame(Play)
-    #
-    # def show_frame(self, page_name):
-    #     '''Show a frame for the given page name'''
-    #     frame = self.frames[page_name]
-    #     frame.tkraise()
+        self.frames= {}
+        container = ttk.Frame(self)
+        container.grid(padx=0, pady=0, sticky="NSW")
+
+        for FrameClass in (Front, Play):
+            frame = FrameClass(container, self)
+            self.frames[FrameClass] = frame
+            frame.grid(row=0, column=0, sticky="NSEW")
+
+        self.show_frame(Front)
+    def show_frame(self, container):
+        '''Show a frame for the given page name'''
+        frame = self.frames[container]
+        frame.tkraise()
 
 def main():
     app = TicTacToe()

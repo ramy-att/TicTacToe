@@ -1,1 +1,1 @@
-from frames.game import Game,Play
+from frames.game import Front,Play
