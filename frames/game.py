@@ -32,6 +32,8 @@ class Front(ttk.Frame):
             padx=(0, 0),
             sticky="NSEW"
         )
+
+        #Buttons
         b1 = tk.Button(
             self,
             bg="grey",
@@ -57,13 +59,13 @@ class Front(ttk.Frame):
             row=2,
             column=0,
         )
-
+#Play Class
 class Play(ttk.Frame):
     def __init__(self, container,controller):
         super().__init__(container)
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
-
+        #Set new strings and buttons
         self.player=tk.StringVar()
         self.player.set("Your move X !")
 
@@ -86,7 +88,7 @@ class Play(ttk.Frame):
         self.button7.set("-")
         self.button8 = tk.StringVar()
         self.button8.set("-")
-
+        #Welcome label
         welcome = ttk.Label(
             self,
             textvariable=self.player
@@ -98,7 +100,7 @@ class Play(ttk.Frame):
             padx=(0,180),
             columnspan=4
         )
-
+        #Buttons
         b = tk.Button(
             self,
             bg="red",
@@ -118,7 +120,7 @@ class Play(ttk.Frame):
         pixelVirtual = tk.PhotoImage(width=1, height=1)
         #create buttons here using for loop
 
-        #Create 9 buttons
+        # Create 9 buttons
         b0 = tk.Button(
             self,
             bg="black",
@@ -247,12 +249,12 @@ class Play(ttk.Frame):
             padx=(0, 60),
 
         )
-
-        #Board
         self.buttons=[b0,b1,b2,b3,b4,b5,b6,b7,b8]
+        #Board
         self.board=[[self.button0,self.button1,self.button2],[self.button3,self.button4,self.button5],[self.button6,self.button7,self.button8]]
 
     def getPlayer(self):
+        '''Player's Turn'''
         if self.turn==True:
             self.player.set("Your move X !")
             print(self.player.get())
@@ -260,6 +262,7 @@ class Play(ttk.Frame):
             self.player.set("Your move O !")
 
     def changeVal(self,button, text):
+        '''Change the O and X'''
         if self.turn==True:
             print("True")
             text.set("X")
@@ -271,48 +274,63 @@ class Play(ttk.Frame):
         self.getPlayer()
         self.checkWinner()
 
-    def showWinner(self):
+
+    def showWinner(self, lst):
+        '''Game Over'''
         self.player.set("Game Over!")
 
         for button in self.buttons:
             button['state']='disabled'
 
+        for element in lst:
+            element.configure(bg="#d2d9cc", fg="black")
+
     def checkWinner(self):
+        '''Check who won the game'''
         #Rows
         if self.board[0][0].get()==self.board[0][1].get() == self.board[0][2].get()!='-':
             self.player.set("Game over! "+ str(self.board[0][0].get())+" Wins")
-            self.showWinner()
+            self.showWinner([self.buttons[0],self.buttons[1],self.buttons[2]])
+
         elif self.board[1][0].get()==self.board[1][1].get() == self.board[1][2].get()!='-':
             self.player.set("Game over! "+ str(self.board[1][0].get())+" Wins")
-            self.showWinner()
+            self.showWinner([self.buttons[3],self.buttons[4],self.buttons[5]])
+
         elif self.board[2][0].get()==self.board[2][1].get() == self.board[2][2].get()!='-':
             self.player.set("Game over! "+ str(self.board[2][0].get())+" Wins")
-            self.showWinner()
+            self.showWinner([self.buttons[6],self.buttons[7],self.buttons[8]])
 
         #Columns
         elif self.board[0][0].get()==self.board[1][0].get() == self.board[2][0].get()!='-':
             self.player.set("Game over! "+ str(self.board[0][0].get())+" Wins")
-            self.showWinner()
+            self.showWinner([self.buttons[0],self.buttons[3],self.buttons[6]])
+
         elif self.board[0][1].get()==self.board[1][1].get() == self.board[2][1].get()!='-':
             self.player.set("Game over! "+ str(self.board[0][1].get())+" Wins")
-            self.showWinner()
+            self.showWinner([self.buttons[1],self.buttons[4],self.buttons[7]])
+
         elif self.board[0][2].get()==self.board[1][2].get() == self.board[2][2].get()!='-':
             self.player.set("Game over! " + str(self.board[0][2].get()) + " Wins")
-            self.showWinner()
+            self.showWinner([self.buttons[2],self.buttons[5],self.buttons[8]])
 
         #Diagonals
         elif self.board[0][0].get()==self.board[1][1].get() == self.board[2][2].get()!='-':
             self.player.set("Game over! "+ str(self.board[0][0].get())+" Wins")
-            self.showWinner()
+            self.showWinner([self.buttons[0], self.buttons[4], self.buttons[8]])
+
         elif self.board[0][2].get()==self.board[1][1].get() == self.board[2][0].get()!='-':
             self.player.set("Game over! "+ str(self.board[0][2].get())+" Wins")
-            self.showWinner()
+            self.showWinner([self.buttons[2],self.buttons[4],self.buttons[6]])
+
         else:
             print("Playing")
 
     def reset(self):
+        '''Reset the game'''
         for button in self.buttons:
             button['state']='normal'
+            button.configure(bg="black", fg="white")
+
         for list in self.board:
             for text in list:
                 text.set("-")
