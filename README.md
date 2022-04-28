@@ -15,6 +15,7 @@ What I learnt:
 - Practice OOP, and python skills
 - Practice tkinter syntax
 - Having fun with programming :)
+- Using pyinstaller
 
 Current Progress:
 
